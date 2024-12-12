@@ -21,12 +21,25 @@ RUN curl -fsSL https://get.docker.com -o get-docker.sh \
     && sh get-docker.sh \
     && rm get-docker.sh
 
-# Install Docker Compose (reliable method)
+# Install Docker Compose
 RUN curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
     && chmod +x /usr/local/bin/docker-compose
 
-# Verify installations
-RUN docker --version && docker-compose --version && curl --version && ping -c 4 8.8.8.8 && nano --version
+# Install additional utilities
+RUN apt-get update && apt-get install -y \
+    iproute2 \
+    net-tools \
+    && rm -rf /var/lib/apt/lists/*
 
-# Set the default command to sleep infinity
-CMD ["sleep", "infinity"]
+# Enable Docker-in-Docker (DinD)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    iptables \
+    && rm -rf /var/lib/apt/lists/*
+
+# Expose Docker API port
+EXPOSE 2375
+
+# Start Docker daemon in the container
+#ENTRYPOINT ["nohup", "dockerd", "&"]
+
+ENTRYPOINT ["nohup", "bash", "-c", "sleep infinity & dockerd"]

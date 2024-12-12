@@ -1,42 +1,54 @@
 
 services:
   manager_1:
-    image: fast_api_python:v1
+    image: ubuntu_with_docker:v3
+    privileged: true 
     ports:
-      - "7010:5000"
+      - "7010:2375"
     networks:
       custom_network:
         ipv4_address: 172.18.0.2
     command: sleep infinity
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
     restart: always
 
   worker_1:
-    image: fast_api_python:v1
+    image: ubuntu_with_docker:v3
+    privileged: true
     ports:
-      - "7011:5000"
+      - "7011:2375"
     networks:
       custom_network:
         ipv4_address: 172.18.0.3
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
     command: sleep infinity
     restart: always
 
   worker_2:
-    image: fast_api_python:v1
+    image: ubuntu_with_docker:v3
+    privileged: true
     ports:
-      - "7012:5000"
+      - "7012:2375"
     networks:
       custom_network:
         ipv4_address: 172.18.0.4
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
     command: sleep infinity
     restart: always
 
   worker_3:
-    image: fast_api_python:v1
+    image: ubuntu_with_docker:v3
+    privileged: true
     ports:
-      - "7013:5000"
+      - "7013:2375"
     networks:
       custom_network:
         ipv4_address: 172.18.0.5
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
     command: sleep infinity
     restart: always
 

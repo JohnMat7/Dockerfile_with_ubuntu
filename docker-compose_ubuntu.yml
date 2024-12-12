@@ -1,0 +1,48 @@
+
+services:
+  manager_1:
+    image: fast_api_python:v1
+    ports:
+      - "7010:5000"
+    networks:
+      custom_network:
+        ipv4_address: 172.18.0.2
+    command: sleep infinity
+    restart: always
+
+  worker_1:
+    image: fast_api_python:v1
+    ports:
+      - "7011:5000"
+    networks:
+      custom_network:
+        ipv4_address: 172.18.0.3
+    command: sleep infinity
+    restart: always
+
+  worker_2:
+    image: fast_api_python:v1
+    ports:
+      - "7012:5000"
+    networks:
+      custom_network:
+        ipv4_address: 172.18.0.4
+    command: sleep infinity
+    restart: always
+
+  worker_3:
+    image: fast_api_python:v1
+    ports:
+      - "7013:5000"
+    networks:
+      custom_network:
+        ipv4_address: 172.18.0.5
+    command: sleep infinity
+    restart: always
+
+networks:
+  custom_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
